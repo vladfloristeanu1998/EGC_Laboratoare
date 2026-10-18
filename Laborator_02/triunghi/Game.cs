@@ -123,6 +123,29 @@ public class Game : GameWindow
         if (KeyboardState.IsKeyDown(Keys.Up)) _offset.Y += viteza * dt;
         if (KeyboardState.IsKeyDown(Keys.Down)) _offset.Y -= viteza * dt;
 
+        // Problema 5: Deformarea triunghiului (punctele a și c)
+        // Modificăm individual coordonatele în tabloul din RAM:
+
+        // Vârful 0 (stânga-jos) se mișcă pe orizontală
+        float v0_x = -0.5f + 0.2f * MathF.Sin((float)_elapsed * 2.0f);
+        _triangle.SetPosition(0, v0_x, -0.5f);
+
+        // Vârful 1 (dreapta-jos) se mișcă pe verticală
+        float v1_y = -0.5f + 0.2f * MathF.Cos((float)_elapsed * 3.0f);
+        _triangle.SetPosition(1, 0.5f, v1_y);
+
+        // Vârful 2 (sus) se mișcă pe verticală
+        float v2_y = 0.5f + 0.3f * MathF.Sin((float)_elapsed);
+        _triangle.SetPosition(2, 0.0f, v2_y);
+
+        // Punctul e: Ca să testăm strângerea într-un punct, se decomentează liniile de mai jos:
+         _triangle.SetPosition(0, 0.0f, 0.0f);
+         _triangle.SetPosition(1, 0.0f, 0.0f);
+         _triangle.SetPosition(2, 0.0f, 0.0f);
+
+        // IMPORTANT: Copiem noile date din RAM în memoria plăcii video (VBO)
+        _triangle.UpdateVertices();
+
         // Exemplul bucla principală: o dată pe secundă afișăm în titlu câte
         // actualizări și câte cadre desenate au avut loc.
         _secondTimer += args.Time;
