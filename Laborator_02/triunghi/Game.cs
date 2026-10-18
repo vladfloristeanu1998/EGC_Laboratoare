@@ -44,7 +44,7 @@ public class Game : GameWindow
                })
     {
         _baseTitle = title;
-        VSync = VSyncMode.On;   // swap-ul bufferelor așteaptă reîmprospătarea monitorului
+        VSync = VSyncMode.Off;   // swap-ul bufferelor așteaptă reîmprospătarea monitorului, schimbat in off la cerinta problemei 4
     }
 
     /// <summary>Apelată O SINGURĂ DATĂ, după crearea ferestrei și a contextului OpenGL.</summary>
@@ -113,6 +113,15 @@ public class Game : GameWindow
         {
             _wireframe = !_wireframe;
         }
+        
+        // Problema 4c: Deplasarea triunghiului cu săgețile (1 unitate NDC / secundă)
+        float dt = (float)args.Time; // delta time (timpul scurs de la ultimul cadru)
+        float viteza = 1.0f;
+
+        if (KeyboardState.IsKeyDown(Keys.Left)) _offset.X -= viteza * dt;
+        if (KeyboardState.IsKeyDown(Keys.Right)) _offset.X += viteza * dt;
+        if (KeyboardState.IsKeyDown(Keys.Up)) _offset.Y += viteza * dt;
+        if (KeyboardState.IsKeyDown(Keys.Down)) _offset.Y -= viteza * dt;
 
         // Exemplul bucla principală: o dată pe secundă afișăm în titlu câte
         // actualizări și câte cadre desenate au avut loc.
