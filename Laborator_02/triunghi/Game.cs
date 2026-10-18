@@ -1,4 +1,4 @@
-using OpenTK.Graphics.OpenGL4;
+ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -20,7 +20,7 @@ public class Game : GameWindow
     private Triangle _triangle = null!;
 
     // Starea aplicației (se modifică în OnUpdateFrame, se folosește în OnRenderFrame).
-    private Color4 _clearColor = new(0.2f, 0.3f, 0.3f, 1.0f);   // culoarea de fundal
+    private Color4 _clearColor = new(0.0f, 0.0f, 0.3f, 1.0f);   // culoarea de fundal
     private Color4 _tint = Color4.White;                          // nuanța triunghiului (alb = neschimbat)
     private Vector3 _offset = Vector3.Zero;                       // deplasarea triunghiului
 
@@ -86,6 +86,27 @@ public class Game : GameWindow
         }
 
         // --- TODO (P1–P5): codul vostru de logică se adaugă aici ---
+
+        // Problema 1: Animația culorii de fundal
+        float r = 0.5f + 0.5f * MathF.Sin((float)_elapsed);
+        float g = 0.5f + 0.5f * MathF.Sin((float)_elapsed + 2.094f); // defazaj 2π/3
+        float b = 0.5f + 0.5f * MathF.Sin((float)_elapsed + 4.189f); // defazaj 4π/3
+        _clearColor = new Color4(r, g, b, 1.0f);
+
+        // Problema 2b: Schimbarea nuanței folosind tastele 0, 1, 2, 3
+        if (KeyboardState.IsKeyPressed(Keys.D1)) _tint = Color4.Red;
+        if (KeyboardState.IsKeyPressed(Keys.D2)) _tint = Color4.Green;
+        if (KeyboardState.IsKeyPressed(Keys.D3)) _tint = Color4.Blue;
+        if (KeyboardState.IsKeyPressed(Keys.D0)) _tint = Color4.White;
+
+        // Problema 2e: Schimbarea culorii unui singur vârf la rulare
+        if (KeyboardState.IsKeyPressed(Keys.Space))
+        {
+            // Când apăsăm Space, setăm vârful de sus (index 2) la culoarea Alb
+            _triangle.SetColor(2, 1.0f, 1.0f, 1.0f);
+            // Este crucial să apelăm UpdateVertices pentru a trimite noile date din RAM pe placa grafică (VBO)
+            _triangle.UpdateVertices();
+        }
 
         // Exemplul bucla principală: o dată pe secundă afișăm în titlu câte
         // actualizări și câte cadre desenate au avut loc.

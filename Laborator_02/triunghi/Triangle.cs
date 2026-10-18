@@ -16,12 +16,12 @@ public sealed class Triangle : IDisposable
     /// până când nu apelăm UpdateVertices(), care copiază tabloul în memoria GPU.
     /// </summary>
     public float[] Vertices { get; } = new float[]
-    {
+     {
         //  poziție (x, y, z)      culoare (r, g, b)
-        -0.5f, -0.5f, 0.0f,      1.0f, 0.0f, 0.0f,   // vârful 0: stânga-jos, roșu
-         0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 0.0f,   // vârful 1: dreapta-jos, verde
-         0.0f,  0.5f, 0.0f,      0.0f, 0.0f, 1.0f    // vârful 2: sus, albastru
-    };
+        -0.5f, -0.5f, 0.0f,      1.0f, 1.0f, 0.0f,   // vârful 0: stânga-jos, galben
+         0.5f, -0.5f, 0.0f,      0.0f, 1.0f, 1.0f,   // vârful 1: dreapta-jos, cyan
+         0.0f,  0.5f, 0.0f,      1.0f, 0.0f, 1.0f    // vârful 2: sus, magenta
+     };
 
     // Indicii: ordinea în care sunt luate vârfurile pentru a forma triunghiuri.
     private readonly uint[] _indices = new uint[] { 0, 1, 2 };
