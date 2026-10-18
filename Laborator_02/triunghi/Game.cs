@@ -139,9 +139,9 @@ public class Game : GameWindow
         _triangle.SetPosition(2, 0.0f, v2_y);
 
         // Punctul e: Ca să testăm strângerea într-un punct, se decomentează liniile de mai jos:
-         _triangle.SetPosition(0, 0.0f, 0.0f);
-         _triangle.SetPosition(1, 0.0f, 0.0f);
-         _triangle.SetPosition(2, 0.0f, 0.0f);
+         //_triangle.SetPosition(0, 0.0f, 0.0f);
+         //_triangle.SetPosition(1, 0.0f, 0.0f);
+         //_triangle.SetPosition(2, 0.0f, 0.0f);
 
         // IMPORTANT: Copiem noile date din RAM în memoria plăcii video (VBO)
         _triangle.UpdateVertices();
