@@ -21,6 +21,7 @@ public class Game : GameWindow
 
     // Starea aplicației (se modifică în OnUpdateFrame, se folosește în OnRenderFrame).
     private Color4 _clearColor = new(0.0f, 0.0f, 0.3f, 1.0f);   // culoarea de fundal
+    private bool _wireframe = false;
     private Color4 _tint = Color4.White;                          // nuanța triunghiului (alb = neschimbat)
     private Vector3 _offset = Vector3.Zero;                       // deplasarea triunghiului
 
@@ -107,6 +108,11 @@ public class Game : GameWindow
             // Este crucial să apelăm UpdateVertices pentru a trimite noile date din RAM pe placa grafică (VBO)
             _triangle.UpdateVertices();
         }
+        // Problema 3b: Comutare mod plin/contur cu tasta F
+        if (KeyboardState.IsKeyPressed(Keys.F))
+        {
+            _wireframe = !_wireframe;
+        }
 
         // Exemplul bucla principală: o dată pe secundă afișăm în titlu câte
         // actualizări și câte cadre desenate au avut loc.
@@ -137,6 +143,22 @@ public class Game : GameWindow
         _shader.SetMatrix4("uProjection", _camera.ProjectionMatrix);
         _shader.SetVector3("uOffset", _offset);
         _shader.SetColor("uTint", _tint);
+
+        // Problema 3: Setarea modului de rasterizare
+        if (_wireframe)
+        {
+            // Modul contur (Line)
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+
+            // Pentru pct. d) (facultativ), se poate înlocui linia de mai sus cu acestea două:
+            //GL.PointSize(10.0f);
+            //GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
+        }
+        else
+        {
+            // Modul plin (Fill - valoarea implicită)
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+        }
 
         // 3. Desenăm triunghiul.
         _triangle.Draw();
