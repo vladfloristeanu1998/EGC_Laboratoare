@@ -169,8 +169,8 @@ public class Game : GameWindow
         //             doar când NU suntem în pauză. Până atunci timpul curge mereu:
         _elapsed += args.Time;
 
-        // TODO (P4a): fundalul își schimbă nuanța în timp (HSV):
-        //     _clearColor = ColorUtil.FromHsv(<nuanța, calculată din _elapsed>, 0.5f, 0.35f);
+        // P4a: Calculul culorii de fundal în funcție de timpul scurs
+        _clearColor = ColorUtil.FromHsv((float)(_elapsed * 0.05), 0.5f, 0.35f);
 
         // --- Titlul ferestrei: forma curentă + câte actualizări / cadre au avut loc în ultima secundă ---
         _secondTimer += args.Time;
