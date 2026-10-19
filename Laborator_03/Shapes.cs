@@ -34,9 +34,16 @@ public static class Shapes
         var vertices = new float[4 * Mesh.FloatsPerVertex];
         var indices = new uint[6];
 
-        // TODO (P1a): completați cele 4 vârfuri cu SetVertex, de exemplu:
-        //     SetVertex(vertices, 0, -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f);   // vârful 0: stânga-jos, roșu
-        //     ... vârfurile 1, 2, 3 (poziții și culori din tabel)
+
+        // P1a: Definirea celor 4 vârfuri (poziție x, y, z și culoare r, g, b)
+        SetVertex(vertices, 0, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f); // 0: Stânga-Jos (Roșu)
+        SetVertex(vertices, 1, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f); // 1: Dreapta-Jos (Verde)
+        SetVertex(vertices, 2, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f); // 2: Dreapta-Sus (Albastru)
+        SetVertex(vertices, 3, -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f); // 3: Stânga-Sus (Galben)
+
+        // P1b: Definirea celor 6 indici (două triunghiuri în sens trigonometric)
+        indices[0] = 0; indices[1] = 1; indices[2] = 2; // Primul triunghi (0 - 1 - 2)
+        indices[3] = 0; indices[4] = 2; indices[5] = 3; // Al doilea triunghi (0 - 2 - 3)
 
         // TODO (P1b): completați cei 6 indici (două triunghiuri, în sens trigonometric), de exemplu:
         //     indices[0] = 0; indices[1] = 1; indices[2] = 2;   // primul triunghi
