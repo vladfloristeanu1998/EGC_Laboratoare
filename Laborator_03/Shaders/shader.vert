@@ -1,33 +1,29 @@
-#version 330 core
+﻿#version 330 core
 
-// Atributele vertexului (din VBO, descrise in VAO)
 layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec3 aColor;
 
-// Uniforme din laboratorul 2
-uniform mat4 uView;
-uniform mat4 uProjection;
-uniform vec3 uOffset;
-
-// Uniforme noi (laboratorul 3)
-uniform float uTime;           // timpul animatiei, in secunde (sta pe loc cand aplicatia e in pauza)
-uniform float uWaveAmplitude;  // amplitudinea undei; 0 = unda oprita (tasta W)
-uniform float uWaveFrequency;  // cat de "deasa" este unda
-uniform int uColorMode;        // 0 = culoarea din VBO, 1 = culoare calculata din pozitie (tasta C)
-
-// Iesire catre fragment shader (valoarea va fi interpolata la rasterizare)
 out vec3 vColor;
+
+uniform float uTime;
+uniform bool uWave;
+uniform int uColorMode;
 
 void main()
 {
-    vec3 position = aPosition;
+    vec3 pos = aPosition;
 
-    // TODO (P5a): unda. Deplasati pozitia pe verticala cu o sinusoida care depinde de x si de timp:
-    //   position.y += uWaveAmplitude * sin(uWaveFrequency * position.x + uTime);
+    // P5a: Deformarea de tip unda
+    if (uWave) {
+        pos.y += 0.1 * sin(10.0 * pos.x + uTime);
+    }
 
-    // TODO (P5c): daca uColorMode este 1, culoarea se calculeaza din pozitie, nu din VBO:
-    //   vColor = aPosition * 0.5 + 0.5;
-    vColor = aColor;
+    gl_Position = vec4(pos, 1.0);
 
-    gl_Position = uProjection * uView * vec4(position + uOffset, 1.0);
+    // P5c: Culoare calculata din pozitie
+    if (uColorMode == 1) {
+        vColor = vec3(pos.xy * 0.5 + vec2(0.5), 0.0);
+    } else {
+        vColor = aColor;
+    }
 }

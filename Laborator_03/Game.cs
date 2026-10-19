@@ -165,9 +165,17 @@ public class Game : GameWindow
 
         // --- Laborator 3: timpul animației ---------------------------------------------
 
-        // TODO (P5b): tasta P comută pauza (_paused = !_paused; _titleDirty = true), iar timpul crește
-        //             doar când NU suntem în pauză. Până atunci timpul curge mereu:
-        _elapsed += args.Time;
+        // TODO (P5b): Comutare stare pauză
+        if (KeyboardState.IsKeyPressed(Keys.P))
+        {
+            _paused = !_paused;
+        }
+
+        // Incrementare timp doar dacă NU este pauză
+        if (!_paused)
+        {
+            _elapsed += args.Time;
+        }
 
         // P4a: Calculul culorii de fundal în funcție de timpul scurs
         _clearColor = ColorUtil.FromHsv((float)(_elapsed * 0.05), 0.5f, 0.35f);
@@ -212,8 +220,7 @@ public class Game : GameWindow
 
         // Uniformele noi din laboratorul 3 (le citește vertex shaderul)
         _shader.SetFloat("uTime", (float)_elapsed);
-        _shader.SetFloat("uWaveAmplitude", _waveOn ? 0.08f : 0.0f);
-        _shader.SetFloat("uWaveFrequency", 6.0f);
+        _shader.SetInt("uWave", _waveOn ? 1 : 0);
         _shader.SetInt("uColorMode", _colorMode);
 
         // 3. Desenăm forma aleasă.
