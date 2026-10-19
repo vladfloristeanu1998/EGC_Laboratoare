@@ -55,7 +55,6 @@ public static class Shapes
     /// <summary>
     /// Poligon regulat cu <paramref name="sides"/> laturi, centrat în origine.
     /// Vârful 0 = centrul; vârfurile 1..n = cele n colțuri, pe un cerc de rază <paramref name="radius"/>.
-    /// Problema 2: completați funcția (vezi secțiunea 4.3). Până atunci nu se vede nimic.
     /// </summary>
     public static Mesh RegularPolygon(int sides, float radius)
     {
@@ -63,21 +62,28 @@ public static class Shapes
         var vertices = new float[(sides + 1) * Mesh.FloatsPerVertex];
         var indices = new uint[sides * 3];
 
-        // TODO (P2a): vârful 0 este centrul (0, 0, 0), de culoare albă:
-        //     SetVertex(vertices, 0, 0.0f, 0.0f, 0.0f, Color4.White);
+        // P2a: Vârful 0 este centrul (0, 0, 0), de culoare albă
+        SetVertex(vertices, 0, 0.0f, 0.0f, 0.0f, Color4.White);
 
         for (int i = 0; i < sides; i++)
         {
-            // Unghiul colțului i: începem de sus (90 de grade) și mergem în sens trigonometric.
+            // Unghiul colțului i: începem de sus (90 de grade = PI/2) și mergem în sens trigonometric
             float angle = MathF.PI / 2.0f + 2.0f * MathF.PI * i / sides;
 
-            // TODO (P2b): coordonatele colțului: x = radius * cos(angle), y = radius * sin(angle)
-            // TODO (P2c): culoarea colțului: nuanța (float)i / sides, saturație 1, luminozitate 1
-            //             (ColorUtil.FromHsv). Atenție: i / sides între doi int dă 0!
-            // TODO (P2d): colțul i se memorează în vârful 1 + i: SetVertex(vertices, 1 + i, ...)
+            // P2b: Coordonatele colțului pe cercul de rază 'radius'
+            float x = radius * MathF.Cos(angle);
+            float y = radius * MathF.Sin(angle);
 
-            // TODO (P2e): triunghiul i are indicii 0, 1 + i, 1 + (i + 1) % sides
-            //             (indices[3 * i], indices[3 * i + 1], indices[3 * i + 2]; convertiți cu (uint))
+            // P2c: Culoarea colțului calculată din spațiul HSV (nuanța H = i / sides, S = 1, V = 1)
+            Color4 color = ColorUtil.FromHsv((float)i / sides, 1.0f, 1.0f);
+
+            // P2d: Salvarea vârfului colțului i pe poziția 1 + i
+            SetVertex(vertices, 1 + i, x, y, 0.0f, color);
+
+            // P2e: Indicii triunghiului i (conectează centrul 0 cu colțul curent și colțul următor)
+            indices[3 * i] = 0;
+            indices[3 * i + 1] = (uint)(1 + i);
+            indices[3 * i + 2] = (uint)(1 + (i + 1) % sides);
         }
 
         return new Mesh(vertices, indices);
